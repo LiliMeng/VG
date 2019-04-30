@@ -112,7 +112,7 @@ class VgSceneGraphDataset(Dataset):
     - objs: LongTensor of shape (O,)
     - position boxes: FloatTensor of shape (O, 4) giving boxes for objects in
       (x0, y0, x1, y1) format, in a [0, 1] coordinate system.
-    - triples: LongTensor of shape (T, 3) where triples[t] = [i, p, j]
+    - relationship triples [relationship_subjects, relationship_predicates, relationship_objects]: LongTensor of shape (T, 3) where triples[t] = [i, p, j]
       means that (objs[i], p, objs[j]) is a triple.
     """
     img_path = os.path.join(self.image_dir, self.image_paths[index])
