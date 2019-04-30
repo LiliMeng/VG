@@ -109,9 +109,9 @@ class VgSceneGraphDataset(Dataset):
   def __getitem__(self, index):
     """
     Returns a tuple of:
+    - objs: LongTensor of shape (O,)
     - position boxes: FloatTensor of shape (O, 4) giving boxes for objects in
       (x0, y0, x1, y1) format, in a [0, 1] coordinate system.
-    - objs: LongTensor of shape (O,)
     - triples: LongTensor of shape (T, 3) where triples[t] = [i, p, j]
       means that (objs[i], p, objs[j]) is a triple.
     """
