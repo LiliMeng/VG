@@ -109,10 +109,9 @@ class VgSceneGraphDataset(Dataset):
   def __getitem__(self, index):
     """
     Returns a tuple of:
-    - image: FloatTensor of shape (C, H, W)
-    - objs: LongTensor of shape (O,)
-    - boxes: FloatTensor of shape (O, 4) giving boxes for objects in
+    - position boxes: FloatTensor of shape (O, 4) giving boxes for objects in
       (x0, y0, x1, y1) format, in a [0, 1] coordinate system.
+    - objs: LongTensor of shape (O,)
     - triples: LongTensor of shape (T, 3) where triples[t] = [i, p, j]
       means that (objs[i], p, objs[j]) is a triple.
     """
@@ -181,7 +180,7 @@ class VgSceneGraphDataset(Dataset):
       triples.append([i, in_image, O - 1])
 
     triples = torch.LongTensor(triples)
-    return image, objs, boxes, triples
+    return  objs, boxes, triples
 
 
 def vg_collate_fn(batch):
@@ -202,8 +201,8 @@ def vg_collate_fn(batch):
   all_imgs, all_objs, all_boxes, all_triples = [], [], [], []
   all_obj_to_img, all_triple_to_img = [], []
   obj_offset = 0
-  for i, (img, objs, boxes, triples) in enumerate(batch):
-    all_imgs.append(img[None])
+  for i, ( objs, boxes, triples) in enumerate(batch):
+    #all_imgs.append(img[None])
     O, T = objs.size(0), triples.size(0)
     all_objs.append(objs)
     all_boxes.append(boxes)
@@ -216,14 +215,14 @@ def vg_collate_fn(batch):
     all_triple_to_img.append(torch.LongTensor(T).fill_(i))
     obj_offset += O
 
-  all_imgs = torch.cat(all_imgs)
+  #all_imgs = torch.cat(all_imgs)
   all_objs = torch.cat(all_objs)
   all_boxes = torch.cat(all_boxes)
   all_triples = torch.cat(all_triples)
   all_obj_to_img = torch.cat(all_obj_to_img)
   all_triple_to_img = torch.cat(all_triple_to_img)
 
-  out = (all_imgs, all_objs, all_boxes, all_triples,
+  out = (all_objs, all_boxes, all_triples,
          all_obj_to_img, all_triple_to_img)
   return out
 
