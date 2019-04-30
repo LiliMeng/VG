@@ -263,6 +263,7 @@ def build_vg_dsets(args):
     'include_relationships': args.include_relationships,
   }
   train_dset = VgSceneGraphDataset(**dset_kwargs)
+  print("train_dset[0] ", train_dset[0])
   iter_per_epoch = len(train_dset) // args.batch_size
   print('There are %d iterations per epoch' % iter_per_epoch)
 
@@ -276,10 +277,7 @@ def build_loaders(args):
   if args.dataset == 'vg':
     vocab, train_dset, val_dset = build_vg_dsets(args)
     collate_fn = vg_collate_fn
-  elif args.dataset == 'coco':
-    vocab, train_dset, val_dset = build_coco_dsets(args)
-    collate_fn = coco_collate_fn
-
+  
   loader_kwargs = {
     'batch_size': args.batch_size,
     'num_workers': args.loader_num_workers,
@@ -287,6 +285,8 @@ def build_loaders(args):
     'collate_fn': collate_fn,
   }
   train_loader = DataLoader(train_dset, **loader_kwargs)
+  
+  print("train_loader[0]: ", train_loader[0])
   
   loader_kwargs['shuffle'] = args.shuffle_val
   val_loader = DataLoader(val_dset, **loader_kwargs)
