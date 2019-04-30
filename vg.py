@@ -1,3 +1,8 @@
+'''
+Dataloader for Visual Genome dataset
+Each data return the following information:
+Class label, position boxes, relationships [relationship_subjects, relationship_predicates, relationship_objects]
+'''
 import os
 import random
 from collections import defaultdict
